@@ -1,0 +1,15 @@
+MAX_LINE	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_LINE = 2048;$/;"	variable	line:4
+PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:5
+BACKLOG	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int BACKLOG = 10;$/;"	variable	line:6
+LISTENQ	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int LISTENQ = 6666;$/;"	variable	line:7
+MAX_CONNECT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_CONNECT = 20;$/;"	variable	line:8
+Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:10
+fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:12	signature:(char *str)
+first_request	/home/changvvb/Build_Chat/project/src/tcp.c	/^int first_request(int sockfd) {$/;"	function	line:24	signature:(int sockfd)
+get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:38	signature:(char *ipbuf, int sockfd)
+tcp_client	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_client(char *ipaddr) {$/;"	function	line:46	signature:(char *ipaddr)
+pipeline	/home/changvvb/Build_Chat/project/src/gtk.c	/^GstElement *pipeline;$/;"	variable	line:7
+print_hello	/home/changvvb/Build_Chat/project/src/gtk.c	/^static void print_hello(GtkWidget *widget, gpointer data) {$/;"	function	line:9	file:	signature:(GtkWidget *widget, gpointer data)
+activate	/home/changvvb/Build_Chat/project/src/gtk.c	/^static void activate(GtkApplication *app, gpointer user_data) {$/;"	function	line:21	file:	signature:(GtkApplication *app, gpointer user_data)
+main	/home/changvvb/Build_Chat/project/src/gtk.c	/^int main(int argc, char **argv) {$/;"	function	line:56	signature:(int argc, char **argv)
+create_pipeline	/home/changvvb/Build_Chat/project/src/gtk.c	/^int create_pipeline() {$/;"	function	line:68

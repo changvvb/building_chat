@@ -1,0 +1,29 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+_CONFIG_H	/home/changvvb/Build_Chat/project/src/config.h	/^#define _CONFIG_H$/;"	macro	line:6
+GTK_H	/home/changvvb/Build_Chat/project/src/gtk.h	/^#define GTK_H$/;"	macro	line:2
+_TCP_H	/home/changvvb/Build_Chat/project/src/tcp.h	/^#define _TCP_H$/;"	macro	line:2
+IP	/home/changvvb/Build_Chat/project/src/tcp.h	/^#define IP /;"	macro	line:11
+print_hello	/home/changvvb/Build_Chat/project/src/main.c	/^static void print_hello(GtkWidget *widget, gpointer data) {$/;"	function	line:6	file:	signature:(GtkWidget *widget, gpointer data)
+activate	/home/changvvb/Build_Chat/project/src/main.c	/^void activate(GtkApplication *app, gpointer user_data) {$/;"	function	line:13	signature:(GtkApplication *app, gpointer user_data)
+main	/home/changvvb/Build_Chat/project/src/main.c	/^int main(int argc, char **argv) {$/;"	function	line:48	signature:(int argc, char **argv)
+CFLASS	/home/changvvb/Build_Chat/project/Makefile	/^CFLASS = -Wall -g$/;"	macro	line:1
+GST_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GST_CFLAGS = `pkg-config "gstreamer-0.10" "gstreamer-interfaces-0.10" --cflags --libs`$/;"	macro	line:2
+GTK_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GTK_CFLAGS = `pkg-config  "gtk+-3.0" --cflags --libs`$/;"	macro	line:3
+pipeline	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^GstElement *pipeline;$/;"	variable	line:5
+create_pipeline	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^int create_pipeline() {$/;"	function	line:7
+set_pipeline_playing	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^void set_pipeline_playing(void) {$/;"	function	line:22	signature:(void)
+MAX_LINE	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_LINE = 2048;$/;"	variable	line:4
+PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:5
+BACKLOG	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int BACKLOG = 10;$/;"	variable	line:6
+LISTENQ	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int LISTENQ = 6666;$/;"	variable	line:7
+MAX_CONNECT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_CONNECT = 20;$/;"	variable	line:8
+Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:10
+fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:12	signature:(char *str)
+first_request	/home/changvvb/Build_Chat/project/src/tcp.c	/^int first_request(int sockfd) {$/;"	function	line:24	signature:(int sockfd)
+get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:38	signature:(char *ipbuf, int sockfd)
+tcp_client	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_client(char *ipaddr) {$/;"	function	line:46	signature:(char *ipaddr)
