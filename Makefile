@@ -4,9 +4,11 @@ GTK_CFLAGS = `pkg-config  "gtk+-3.0" --cflags --libs`
 
 default: build_chat
 
-build_chat: gtk.o gst.o tcp.o
+build_chat: gtk.o gst.o tcp.o init.o
 	gcc $(GST_CFLAGS)  $(GTK_CFLAGS) $(CFLASS) $^ -o build_chat
 
+init.o: src/init.c
+	gcc $(CFLASS) $^ -c -o init.o
 tcp.o: src/tcp.c
 	gcc $(CFLASS)  $^ -c -o tcp.o
 gst.o: src/gstreamer.c

@@ -3,12 +3,12 @@
 
 const int MAX_LINE = 2048;
 const int PORT = 10000;
-const int BACKLOG = 10;
-const int LISTENQ = 6666;
-const int MAX_CONNECT = 20;
 
+/*the tcp socket file fd*/
+int sockfd;
 char Device_IP[32]; // ipv4
 
+/*convert '\n' or '\r' to '\0'*/
 void fix_string(char *str) {
   char *p;
   for (p = str; *p != '\n' && *p != '\r'; p++)
@@ -21,7 +21,9 @@ return 0: OK
        1: failed
 sent MEDIA_DEVICE
 */
-int first_request(int sockfd) {
+int device_regist(int sockfd) {
+  if (is_connected(sockfd) != 0)
+    return -1;
   char RevBuf[32];
   write(sockfd, "MEDIA_DEVICE\r\n", 24);
   while (!read(sockfd, RevBuf, 32)) {
@@ -34,20 +36,37 @@ int first_request(int sockfd) {
     return 1;
 }
 
+/*
+describe： Get device ip from server
+return: -1 connect to server failed
+        0  OK
+*/
 /*sent GET_IP_FROM_PI*/
 int get_device_ip(char *ipbuf, int sockfd) {
+#ifdef DEBUG_WITHOUT_SERVER
+  strcpy(ipbuf, "127.0.0.1");
+  return 0;
+#endif
+  if (is_connected(sockfd) != 0) {
+    return -1;
+  }
   write(sockfd, "GET_IP_FROM_PI\r\n", 24);
   while (!read(sockfd, ipbuf, 32))
     printf("%s\n", ipbuf);
+#ifdef DEBUG
   printf("recive done\n ip:%s", ipbuf);
+#endif
   fix_string(ipbuf);
+  return 0;
 }
 
-void tcp_client(char *ipaddr) {
+void tcp_connect(char *ipaddr) {
   /*声明套接字和链接服务器地址*/
-  int sockfd;
   struct sockaddr_in servaddr;
-
+// ipaddr = IP;
+#ifdef DEBUG
+  printf("%s", ipaddr);
+#endif
   /*判断是否为合法输入*/
   if (ipaddr == NULL) {
     perror("ipaddr == NULL");
@@ -76,10 +95,23 @@ void tcp_client(char *ipaddr) {
   } // if
 
   /*(4) 消息处理*/
-  // write(sockfd, "Can you hear me?", 24);
-  first_request(sockfd);
-  printf("正在获取设备IP\n");
+  device_regist(sockfd);
   get_device_ip(Device_IP, sockfd);
   /*(5) 关闭套接字*/
   close(sockfd);
+}
+
+/*
+describe: test if tcp conection is alive
+return: 0 connected
+        1 disconnected
+*/
+int is_connected(int sockfd) {
+  int error = 0;
+  socklen_t len = sizeof(error);
+  int retval = getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &error, &len);
+#ifdef DEBUG
+  printf("\nis_connected: retval: %d", retval);
+#endif
+  return retval;
 }

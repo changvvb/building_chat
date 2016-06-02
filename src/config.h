@@ -17,5 +17,6 @@
 #include <unistd.h>
 
 extern char Device_IP[32];
+#define DEBUG
 
 #endif
