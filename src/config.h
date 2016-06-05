@@ -17,6 +17,10 @@
 #include <unistd.h>
 
 extern char Device_IP[32];
-#define DEBUG
-
+#define DEBUG 1
+#define debug_print(fmt, ...)                                                  \
+  do {                                                                         \
+    if (DEBUG)                                                                 \
+      fprintf(stderr, fmt, ##__VA_ARGS__);                                     \
+  } while (0)
 #endif

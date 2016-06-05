@@ -7,7 +7,9 @@ void init(void);
 
 static void print_hello(GtkWidget *widget, gpointer data) {
   g_print("Hello World\n");
+  get_device_ip(Device_IP, sockfd);
   set_pipeline_playing();
+  tcp_sent_you_can_see_me();
 }
 
 void activate(GtkApplication *app, gpointer user_data) {
@@ -26,7 +28,7 @@ void activate(GtkApplication *app, gpointer user_data) {
 
   window = gtk_application_window_new(app);
   gtk_window_set_title(GTK_WINDOW(window), "Window");
-  gtk_window_set_default_size(GTK_WINDOW(window), 1024, 600);
+  gtk_window_set_default_size(GTK_WINDOW(window), 400, 300);
 
   button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
   gtk_container_add(GTK_CONTAINER(window), button_box);

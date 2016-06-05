@@ -1,29 +1,51 @@
-!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
-!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
-!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
-!_TAG_PROGRAM_NAME	Exuberant Ctags	//
-!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-_CONFIG_H	/home/changvvb/Build_Chat/project/src/config.h	/^#define _CONFIG_H$/;"	macro	line:6
-GTK_H	/home/changvvb/Build_Chat/project/src/gtk.h	/^#define GTK_H$/;"	macro	line:2
+serial_change_direction	/home/changvvb/Build_Chat/project/src/serial.c	/^void serial_change_direction(int dir) {$/;"	function	line:4	signature:(int dir)
+SERIAL_H	/home/changvvb/Build_Chat/project/src/servo.h	/^#define SERIAL_H$/;"	macro	line:2
+RIGHT	/home/changvvb/Build_Chat/project/src/servo.h	/^#define RIGHT /;"	macro	line:5
+LEFT	/home/changvvb/Build_Chat/project/src/servo.h	/^#define LEFT /;"	macro	line:6
+UP	/home/changvvb/Build_Chat/project/src/servo.h	/^#define UP /;"	macro	line:7
+DOWN	/home/changvvb/Build_Chat/project/src/servo.h	/^#define DOWN /;"	macro	line:8
+NOTHING	/home/changvvb/Build_Chat/project/src/servo.h	/^#define NOTHING /;"	macro	line:9
+SEROV_TURN_RIGHT	/home/changvvb/Build_Chat/project/src/servo.h	/^#define SEROV_TURN_RIGHT /;"	macro	line:13
+SEROV_TURN_LEFT	/home/changvvb/Build_Chat/project/src/servo.h	/^#define SEROV_TURN_LEFT /;"	macro	line:14
+SEROV_TURN_UP	/home/changvvb/Build_Chat/project/src/servo.h	/^#define SEROV_TURN_UP /;"	macro	line:15
+SEROV_TURN_DOWN	/home/changvvb/Build_Chat/project/src/servo.h	/^#define SEROV_TURN_DOWN /;"	macro	line:16
+main	/home/changvvb/Build_Chat/project/src/gpio_test.c	/^int main() {$/;"	function	line:4
+CC	/home/changvvb/Build_Chat/project/Makefile	/^CC = gcc$/;"	macro	line:1
+CFLASS	/home/changvvb/Build_Chat/project/Makefile	/^CFLASS = -Wall -g$/;"	macro	line:2
+GST_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GST_CFLAGS = `pkg-config "gstreamer-0.10" "gstreamer-interfaces-0.10" --cflags --libs`$/;"	macro	line:3
+GTK_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GTK_CFLAGS = `pkg-config  "gtk+-3.0" --cflags --libs`$/;"	macro	line:4
+CLIB	/home/changvvb/Build_Chat/project/Makefile	/^CLIB = -lpthread -lwiringPi -lwiringPiDev$/;"	macro	line:5
+ONPC	/home/changvvb/Build_Chat/project/src/servo.c	/^#define ONPC /;"	macro	line:3	file:
+horizontal_value	/home/changvvb/Build_Chat/project/src/servo.c	/^int horizontal_value = 500; \/\/ max 1000 min 0$/;"	variable	line:6
+vertical_value	/home/changvvb/Build_Chat/project/src/servo.c	/^int vertical_value = 500;$/;"	variable	line:7
+SERVO_HORIZONTAL	/home/changvvb/Build_Chat/project/src/servo.c	/^#define SERVO_HORIZONTAL /;"	macro	line:8	file:
+SERVO_VERTICAL	/home/changvvb/Build_Chat/project/src/servo.c	/^#define SERVO_VERTICAL /;"	macro	line:9	file:
+servo_init	/home/changvvb/Build_Chat/project/src/servo.c	/^void servo_init() {$/;"	function	line:10
+serov_change_direction	/home/changvvb/Build_Chat/project/src/servo.c	/^void serov_change_direction(int dir) {$/;"	function	line:24	signature:(int dir)
+serov_change_direction	/home/changvvb/Build_Chat/project/src/servo.c	/^void serov_change_direction(int dir) {$/;"	function	line:46	signature:(int dir)
+servo_init	/home/changvvb/Build_Chat/project/src/servo.c	/^void servo_init() {}$/;"	function	line:57
+init	/home/changvvb/Build_Chat/project/src/init.c	/^void init(void) {$/;"	function	line:4	signature:(void)
+print_hello	/home/changvvb/Build_Chat/project/src/gtk.c	/^static void print_hello(GtkWidget *widget, gpointer data) {$/;"	function	line:8	file:	signature:(GtkWidget *widget, gpointer data)
+activate	/home/changvvb/Build_Chat/project/src/gtk.c	/^void activate(GtkApplication *app, gpointer user_data) {$/;"	function	line:15	signature:(GtkApplication *app, gpointer user_data)
+main	/home/changvvb/Build_Chat/project/src/gtk.c	/^int main(int argc, char **argv) {$/;"	function	line:45	signature:(int argc, char **argv)
 _TCP_H	/home/changvvb/Build_Chat/project/src/tcp.h	/^#define _TCP_H$/;"	macro	line:2
-IP	/home/changvvb/Build_Chat/project/src/tcp.h	/^#define IP /;"	macro	line:11
-print_hello	/home/changvvb/Build_Chat/project/src/main.c	/^static void print_hello(GtkWidget *widget, gpointer data) {$/;"	function	line:6	file:	signature:(GtkWidget *widget, gpointer data)
-activate	/home/changvvb/Build_Chat/project/src/main.c	/^void activate(GtkApplication *app, gpointer user_data) {$/;"	function	line:13	signature:(GtkApplication *app, gpointer user_data)
-main	/home/changvvb/Build_Chat/project/src/main.c	/^int main(int argc, char **argv) {$/;"	function	line:48	signature:(int argc, char **argv)
-CFLASS	/home/changvvb/Build_Chat/project/Makefile	/^CFLASS = -Wall -g$/;"	macro	line:1
-GST_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GST_CFLAGS = `pkg-config "gstreamer-0.10" "gstreamer-interfaces-0.10" --cflags --libs`$/;"	macro	line:2
-GTK_CFLAGS	/home/changvvb/Build_Chat/project/Makefile	/^GTK_CFLAGS = `pkg-config  "gtk+-3.0" --cflags --libs`$/;"	macro	line:3
-pipeline	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^GstElement *pipeline;$/;"	variable	line:5
-create_pipeline	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^int create_pipeline() {$/;"	function	line:7
-set_pipeline_playing	/home/changvvb/Build_Chat/project/src/gstreamer.c	/^void set_pipeline_playing(void) {$/;"	function	line:22	signature:(void)
-MAX_LINE	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_LINE = 2048;$/;"	variable	line:4
-PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:5
-BACKLOG	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int BACKLOG = 10;$/;"	variable	line:6
-LISTENQ	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int LISTENQ = 6666;$/;"	variable	line:7
-MAX_CONNECT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_CONNECT = 20;$/;"	variable	line:8
-Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:10
-fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:12	signature:(char *str)
-first_request	/home/changvvb/Build_Chat/project/src/tcp.c	/^int first_request(int sockfd) {$/;"	function	line:24	signature:(int sockfd)
-get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:38	signature:(char *ipbuf, int sockfd)
-tcp_client	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_client(char *ipaddr) {$/;"	function	line:46	signature:(char *ipaddr)
+IP	/home/changvvb/Build_Chat/project/src/tcp.h	/^#define IP /;"	macro	line:15
+PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:6
+sockfd	/home/changvvb/Build_Chat/project/src/tcp.c	/^int sockfd;$/;"	variable	line:8
+device_is_connected	/home/changvvb/Build_Chat/project/src/tcp.c	/^int device_is_connected;$/;"	variable	line:9
+RevBuf	/home/changvvb/Build_Chat/project/src/tcp.c	/^char RevBuf[128];$/;"	variable	line:10
+REV_BUF_LENGTH	/home/changvvb/Build_Chat/project/src/tcp.c	/^#define REV_BUF_LENGTH /;"	macro	line:11	file:
+Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:12
+tcp_check_pthread	/home/changvvb/Build_Chat/project/src/tcp.c	/^pthread_t tcp_check_pthread;$/;"	variable	line:13
+readline	/home/changvvb/Build_Chat/project/src/tcp.c	/^ssize_t readline(int fd, char *vptr, size_t maxlen) {$/;"	function	line:15	signature:(int fd, char *vptr, size_t maxlen)
+fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:37	signature:(char *str)
+device_regist	/home/changvvb/Build_Chat/project/src/tcp.c	/^int device_regist() {$/;"	function	line:51
+get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:74	signature:(char *ipbuf, int sockfd)
+tcp_connect	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_connect(char *ipaddr) {$/;"	function	line:94	signature:(char *ipaddr)
+is_connected	/home/changvvb/Build_Chat/project/src/tcp.c	/^int is_connected() {$/;"	function	line:141
+thread_exit	/home/changvvb/Build_Chat/project/src/tcp.c	/^int thread_exit = 0;$/;"	variable	line:161
+tcp_check_pthread_creat	/home/changvvb/Build_Chat/project/src/tcp.c	/^int tcp_check_pthread_creat() {$/;"	function	line:162
+tcp_sent_you_can_see_me	/home/changvvb/Build_Chat/project/src/tcp.c	/^int tcp_sent_you_can_see_me() {$/;"	function	line:170
+quit_handle	/home/changvvb/Build_Chat/project/src/tcp.c	/^int quit_handle() {$/;"	function	line:175
+CMP	/home/changvvb/Build_Chat/project/src/tcp.c	/^#define CMP(/;"	macro	line:181	file:
+tcp_check_function	/home/changvvb/Build_Chat/project/src/tcp.c	/^void *tcp_check_function(void *ptr) {$/;"	function	line:183	signature:(void *ptr)

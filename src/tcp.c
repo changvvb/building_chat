@@ -1,18 +1,45 @@
 #include "tcp.h"
 #include "config.h"
+#include "servo.h"
+#include <signal.h>
 
-const int MAX_LINE = 2048;
 const int PORT = 10000;
-
 /*the tcp socket file fd*/
 int sockfd;
+int device_is_connected;
+char RevBuf[128];
+#define REV_BUF_LENGTH 128
 char Device_IP[32]; // ipv4
+pthread_t tcp_check_pthread;
+
+ssize_t readline(int fd, char *vptr, size_t maxlen) {
+  ssize_t n, rc;
+  char c, *ptr;
+
+  ptr = vptr;
+  for (n = 1; n < maxlen; n++) {
+    if ((rc = read(fd, &c, 1)) == 1) {
+      *ptr++ = c;
+      if (c == '\n')
+        break; /* newline is stored, like fgets() */
+    } else if (rc == 0) {
+      *ptr = 0;
+      return (n - 1); /* EOF, n - 1 bytes were read */
+    } else
+      return (-1); /* error, errno set by read() */
+  }
+
+  *ptr = 0; /* null terminate like fgets() */
+  return (n);
+}
 
 /*convert '\n' or '\r' to '\0'*/
 void fix_string(char *str) {
   char *p;
-  for (p = str; *p != '\n' && *p != '\r'; p++)
-    ;
+  int num;
+  for (p = str, num = 0; *p != '\n' && *p != '\r'; p++, num++)
+    if (num >= 32)
+      return;
   *p = '\0';
 }
 
@@ -21,18 +48,20 @@ return 0: OK
        1: failed
 sent MEDIA_DEVICE
 */
-int device_regist(int sockfd) {
-  if (is_connected(sockfd) != 0)
-    return -1;
+int device_regist() {
+  // if (is_connected(sockfd) != 0) {
+  //   debug_print("socket is not connected\n");
+  //   return -1;
+  // }
   char RevBuf[32];
+  int err;
   write(sockfd, "MEDIA_DEVICE\r\n", 24);
-  while (!read(sockfd, RevBuf, 32)) {
-    /* code */
-    printf("RevBuf : %s\n", RevBuf);
-  }
-  if (strcmp("0", RevBuf) == 0)
+  readline(sockfd, RevBuf, 32);
+  debug_print("RevBuf:%s\n", RevBuf);
+  if (strcmp("RIGHT", RevBuf) == 0) {
+    debug_print("regist done");
     return 0;
-  else
+  } else
     return 1;
 }
 
@@ -44,18 +73,20 @@ return: -1 connect to server failed
 /*sent GET_IP_FROM_PI*/
 int get_device_ip(char *ipbuf, int sockfd) {
 #ifdef DEBUG_WITHOUT_SERVER
+  debug_print("TEST IP: 127.0.0.1");
   strcpy(ipbuf, "127.0.0.1");
   return 0;
 #endif
-  if (is_connected(sockfd) != 0) {
-    return -1;
-  }
+  // if (is_connected(sockfd) != 0) {
+  //   return -1;
+  // }
   write(sockfd, "GET_IP_FROM_PI\r\n", 24);
-  while (!read(sockfd, ipbuf, 32))
-    printf("%s\n", ipbuf);
-#ifdef DEBUG
-  printf("recive done\n ip:%s", ipbuf);
-#endif
+  // if (readline(sockfd, RevBuf, 32) != 0) {
+  //   if (strstr)
+  //     strcpy(ipbuf, RevBuf);
+  //   debug_print("device ip:%s\n", ipbuf);
+  // }
+  // debug_print("recive done\n ip:%s", ipbuf);
   fix_string(ipbuf);
   return 0;
 }
@@ -63,13 +94,11 @@ int get_device_ip(char *ipbuf, int sockfd) {
 void tcp_connect(char *ipaddr) {
   /*声明套接字和链接服务器地址*/
   struct sockaddr_in servaddr;
-// ipaddr = IP;
-#ifdef DEBUG
-  printf("%s", ipaddr);
-#endif
+  // ipaddr = IP;
+  debug_print("server IP: %s\n", ipaddr);
   /*判断是否为合法输入*/
   if (ipaddr == NULL) {
-    perror("ipaddr == NULL");
+    printf("ipaddr == NULL");
     exit(1);
   } // if
 
@@ -94,24 +123,94 @@ void tcp_connect(char *ipaddr) {
     exit(1);
   } // if
 
+  debug_print("connected\n");
+
   /*(4) 消息处理*/
-  device_regist(sockfd);
+  device_regist();
+  tcp_check_pthread_creat();
   get_device_ip(Device_IP, sockfd);
-  /*(5) 关闭套接字*/
-  close(sockfd);
+  // /*(5) 关闭套接字*/
+  // close(sockfd);
 }
 
 /*
 describe: test if tcp conection is alive
 return: 0 connected
-        1 disconnected
+        -1 disconnected
 */
-int is_connected(int sockfd) {
-  int error = 0;
-  socklen_t len = sizeof(error);
-  int retval = getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &error, &len);
-#ifdef DEBUG
-  printf("\nis_connected: retval: %d", retval);
-#endif
-  return retval;
+int is_connected() {
+  int retval;
+  retval = write(sockfd, "CONNECTION_TEST", 16);
+  if ((retval = readline(sockfd, RevBuf, REV_BUF_LENGTH)) == -1) {
+    debug_print("is not connected\n");
+    debug_print("retval: %d\n", retval);
+    return -1;
+  } else {
+    debug_print("RevBuf:%s\n", RevBuf);
+    debug_print("retval: %d\n", retval);
+    return 0;
+  }
+
+  debug_print("\nis_connected: retval: %d\n", retval);
+  if (retval < 0)
+    return -1;
+  else
+    return 0;
+}
+
+int thread_exit = 0;
+int tcp_check_pthread_creat() {
+  int iret;
+  iret = pthread_create(&tcp_check_pthread, NULL, tcp_check_function, NULL);
+  if (iret != 0) {
+    debug_print("thread created error");
+  }
+}
+
+int tcp_sent_you_can_see_me() {
+  char *sentstr = "\r\nYOU_CAN_SEE_ME_NOW\r\n";
+  write(sockfd, sentstr, strlen(sentstr));
+}
+
+int quit_handle() {
+  thread_exit = 1;
+  debug_print("quit_handle called\n");
+  exit(1);
+}
+
+#define CMP(x) (!strcmp("" #x "", RevBuf))
+
+void *tcp_check_function(void *ptr) {
+  int connected_ret;
+  char *str;
+  signal(SIGINT, quit_handle);
+  while (!thread_exit) {
+    if (readline(sockfd, RevBuf, REV_BUF_LENGTH) != 0) {
+      fix_string(RevBuf);
+      debug_print("RevBuf:%s\n", RevBuf);
+      if (CMP(CAMERA_UP))
+        SEROV_TURN_UP;
+      else if (CMP(CAMERA_DOWN))
+        SEROV_TURN_DOWN;
+      else if (CMP(CAMERA_RIGHT))
+        SEROV_TURN_RIGHT;
+      else if (CMP(CAMERA_LEFT))
+        SEROV_TURN_LEFT;
+      else if ((str = strstr(RevBuf, "DEVICE_IP:")) != NULL) {
+        debug_print("%s\n", str + strlen("DEVICE_IP") + 1);
+        strcpy(Device_IP, str + strlen("DEVICE_IP") + 1);
+        create_pipeline();
+      }
+    }
+    /*
+  connected_ret = is_connected();
+  if (connected_ret != 0) {
+    debug_print("tcp_check: \ntcp_connect error");
+    tcp_connect(IP);
+  } else {
+    debug_print("connect\n");
+  }
+  sleep(2);*/
+  }
+  debug_print("tcp_check_function called finish\n");
 }

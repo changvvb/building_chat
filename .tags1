@@ -4,13 +4,22 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-MAX_LINE	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_LINE = 2048;$/;"	variable	line:4
-PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:5
-BACKLOG	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int BACKLOG = 10;$/;"	variable	line:6
-LISTENQ	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int LISTENQ = 6666;$/;"	variable	line:7
-MAX_CONNECT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int MAX_CONNECT = 20;$/;"	variable	line:8
-Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:10
-fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:12	signature:(char *str)
-first_request	/home/changvvb/Build_Chat/project/src/tcp.c	/^int first_request(int sockfd) {$/;"	function	line:24	signature:(int sockfd)
-get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:38	signature:(char *ipbuf, int sockfd)
-tcp_client	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_client(char *ipaddr) {$/;"	function	line:46	signature:(char *ipaddr)
+PORT	/home/changvvb/Build_Chat/project/src/tcp.c	/^const int PORT = 10000;$/;"	variable	line:6
+sockfd	/home/changvvb/Build_Chat/project/src/tcp.c	/^int sockfd;$/;"	variable	line:8
+device_is_connected	/home/changvvb/Build_Chat/project/src/tcp.c	/^int device_is_connected;$/;"	variable	line:9
+RevBuf	/home/changvvb/Build_Chat/project/src/tcp.c	/^char RevBuf[128];$/;"	variable	line:10
+REV_BUF_LENGTH	/home/changvvb/Build_Chat/project/src/tcp.c	/^#define REV_BUF_LENGTH /;"	macro	line:11	file:
+Device_IP	/home/changvvb/Build_Chat/project/src/tcp.c	/^char Device_IP[32]; \/\/ ipv4$/;"	variable	line:12
+tcp_check_pthread	/home/changvvb/Build_Chat/project/src/tcp.c	/^pthread_t tcp_check_pthread;$/;"	variable	line:13
+readline	/home/changvvb/Build_Chat/project/src/tcp.c	/^ssize_t readline(int fd, char *vptr, size_t maxlen) {$/;"	function	line:15	signature:(int fd, char *vptr, size_t maxlen)
+fix_string	/home/changvvb/Build_Chat/project/src/tcp.c	/^void fix_string(char *str) {$/;"	function	line:37	signature:(char *str)
+device_regist	/home/changvvb/Build_Chat/project/src/tcp.c	/^int device_regist() {$/;"	function	line:51
+get_device_ip	/home/changvvb/Build_Chat/project/src/tcp.c	/^int get_device_ip(char *ipbuf, int sockfd) {$/;"	function	line:74	signature:(char *ipbuf, int sockfd)
+tcp_connect	/home/changvvb/Build_Chat/project/src/tcp.c	/^void tcp_connect(char *ipaddr) {$/;"	function	line:94	signature:(char *ipaddr)
+is_connected	/home/changvvb/Build_Chat/project/src/tcp.c	/^int is_connected() {$/;"	function	line:141
+thread_exit	/home/changvvb/Build_Chat/project/src/tcp.c	/^int thread_exit = 0;$/;"	variable	line:161
+tcp_check_pthread_creat	/home/changvvb/Build_Chat/project/src/tcp.c	/^int tcp_check_pthread_creat() {$/;"	function	line:162
+tcp_sent_you_can_see_me	/home/changvvb/Build_Chat/project/src/tcp.c	/^int tcp_sent_you_can_see_me() {$/;"	function	line:170
+quit_handle	/home/changvvb/Build_Chat/project/src/tcp.c	/^int quit_handle() {$/;"	function	line:175
+CMP	/home/changvvb/Build_Chat/project/src/tcp.c	/^#define CMP(/;"	macro	line:181	file:
+tcp_check_function	/home/changvvb/Build_Chat/project/src/tcp.c	/^void *tcp_check_function(void *ptr) {$/;"	function	line:183	signature:(void *ptr)
