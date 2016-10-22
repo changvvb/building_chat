@@ -16,6 +16,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define ONPC 0
+
 extern char Device_IP[32];
 #define DEBUG 1
 #define debug_print(fmt, ...)                                                  \

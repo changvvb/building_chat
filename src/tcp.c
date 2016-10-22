@@ -1,16 +1,27 @@
 #include "tcp.h"
 #include "config.h"
+#include "gstreamer.h"
+#include "gstreamer_receive.h"
+#include "gtk.h"
 #include "servo.h"
+#include <arpa/inet.h>
+#include <net/if.h>
+#include <netinet/in.h>
 #include <signal.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
 const int PORT = 10000;
 /*the tcp socket file fd*/
 int sockfd;
 int device_is_connected;
 char RevBuf[128];
+char SendBuf[128];
 #define REV_BUF_LENGTH 128
 char Device_IP[32]; // ipv4
 pthread_t tcp_check_pthread;
+pthread_t tcp_get_commond_pthread;
 
 ssize_t readline(int fd, char *vptr, size_t maxlen) {
   ssize_t n, rc;
@@ -54,7 +65,6 @@ int device_regist() {
   //   return -1;
   // }
   char RevBuf[32];
-  int err;
   write(sockfd, "MEDIA_DEVICE\r\n", 24);
   readline(sockfd, RevBuf, 32);
   debug_print("RevBuf:%s\n", RevBuf);
@@ -71,7 +81,7 @@ return: -1 connect to server failed
         0  OK
 */
 /*sent GET_IP_FROM_PI*/
-int get_device_ip(char *ipbuf, int sockfd) {
+int get_device_ip(char *ipbuf) {
 #ifdef DEBUG_WITHOUT_SERVER
   debug_print("TEST IP: 127.0.0.1");
   strcpy(ipbuf, "127.0.0.1");
@@ -89,6 +99,26 @@ int get_device_ip(char *ipbuf, int sockfd) {
   // debug_print("recive done\n ip:%s", ipbuf);
   fix_string(ipbuf);
   return 0;
+}
+
+void get_pi_ip() {
+  int fd;
+  struct ifreq ifr;
+
+  fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+  /* I want to get an IPv4 IP address */
+  ifr.ifr_addr.sa_family = AF_INET;
+
+  /* I want IP address attached to "wlan0" */
+  strncpy(ifr.ifr_name, "eth0", IFNAMSIZ - 1);
+
+  ioctl(fd, SIOCGIFADDR, &ifr);
+
+  close(fd);
+  sprintf(SendBuf, "\r\nIP_FROM_PI %s\r\n",
+          inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+  write(sockfd, SendBuf, strlen(SendBuf));
 }
 
 void tcp_connect(char *ipaddr) {
@@ -128,7 +158,7 @@ void tcp_connect(char *ipaddr) {
   /*(4) 消息处理*/
   device_regist();
   tcp_check_pthread_creat();
-  get_device_ip(Device_IP, sockfd);
+  get_device_ip(Device_IP);
   // /*(5) 关闭套接字*/
   // close(sockfd);
 }
@@ -140,7 +170,9 @@ return: 0 connected
 */
 int is_connected() {
   int retval;
-  retval = write(sockfd, "CONNECTION_TEST", 16);
+  retval = write(sockfd, "\r\nCONNECTION_TEST\r\n", 16);
+  return 0;
+  /*
   if ((retval = readline(sockfd, RevBuf, REV_BUF_LENGTH)) == -1) {
     debug_print("is not connected\n");
     debug_print("retval: %d\n", retval);
@@ -149,30 +181,36 @@ int is_connected() {
     debug_print("RevBuf:%s\n", RevBuf);
     debug_print("retval: %d\n", retval);
     return 0;
-  }
-
+}*/
   debug_print("\nis_connected: retval: %d\n", retval);
-  if (retval < 0)
-    return -1;
-  else
-    return 0;
 }
 
 int thread_exit = 0;
-int tcp_check_pthread_creat() {
-  int iret;
-  iret = pthread_create(&tcp_check_pthread, NULL, tcp_check_function, NULL);
-  if (iret != 0) {
-    debug_print("thread created error");
-  }
+
+void tcp_sent_you_can_see_me() {
+  int fd;
+  struct ifreq ifr;
+
+  fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+  /* I want to get an IPv4 IP address */
+  ifr.ifr_addr.sa_family = AF_INET;
+
+  /* I want IP address attached to "wlan0" */
+  strncpy(ifr.ifr_name, "eth0", IFNAMSIZ - 1);
+
+  ioctl(fd, SIOCGIFADDR, &ifr);
+
+  close(fd);
+  sprintf(SendBuf, "\r\nIP_FROM_PI %s\r\nYOU_CAN_SEE_ME_NOW\r\n",
+          inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+  debug_print("this device ip %s",
+              inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+  write(sockfd, SendBuf, strlen(SendBuf));
 }
 
-int tcp_sent_you_can_see_me() {
-  char *sentstr = "\r\nYOU_CAN_SEE_ME_NOW\r\n";
-  write(sockfd, sentstr, strlen(sentstr));
-}
-
-int quit_handle() {
+void quit_handle(int i) {
+  i = i;
   thread_exit = 1;
   debug_print("quit_handle called\n");
   exit(1);
@@ -180,8 +218,7 @@ int quit_handle() {
 
 #define CMP(x) (!strcmp("" #x "", RevBuf))
 
-void *tcp_check_function(void *ptr) {
-  int connected_ret;
+void *tcp_get_commond() {
   char *str;
   signal(SIGINT, quit_handle);
   while (!thread_exit) {
@@ -196,21 +233,54 @@ void *tcp_check_function(void *ptr) {
         SEROV_TURN_RIGHT;
       else if (CMP(CAMERA_LEFT))
         SEROV_TURN_LEFT;
+      /**/
+      else if (CMP(VIDEO_START)) {
+        get_device_ip(Device_IP);
+        create_pipeline();
+        set_pipeline_playing();
+        debug_print("it will play vidio!!!\n");
+      } else if (CMP(VIDEO_STOP)) {
+        debug_print("it will stop vidio!!!\n");
+        // set_receive_pipeline_stop();
+        set_pipeline_pause();
+      } else if (CMP(GET_IP)) {
+        get_pi_ip();
+        // create_receive_pipeline();
+        set_receive_pipeline_playing();
+      } /*else if (CMP(VIDEO_START))
+          get_device_ip(Device_IP);
+          */
       else if ((str = strstr(RevBuf, "DEVICE_IP:")) != NULL) {
         debug_print("%s\n", str + strlen("DEVICE_IP") + 1);
         strcpy(Device_IP, str + strlen("DEVICE_IP") + 1);
-        create_pipeline();
+        // create_pipeline();
       }
     }
-    /*
-  connected_ret = is_connected();
-  if (connected_ret != 0) {
-    debug_print("tcp_check: \ntcp_connect error");
-    tcp_connect(IP);
-  } else {
-    debug_print("connect\n");
   }
-  sleep(2);*/
+  debug_print("comond check exit\n");
+}
+
+void *tcp_check_function(void *ptr) {
+  int connected_ret;
+
+  while (1) {
+    connected_ret = is_connected();
+    if (connected_ret != 0) {
+      debug_print("tcp_check: \ntcp_connect error");
+      tcp_connect(IP);
+    } else {
+      debug_print("connect\n");
+    }
+    sleep(2);
   }
   debug_print("tcp_check_function called finish\n");
+}
+
+void tcp_check_pthread_creat() {
+  int iret;
+  // iret1 = pthread_create(&tcp_check_pthread, NULL, tcp_check_function, NULL);
+  iret = pthread_create(&tcp_get_commond_pthread, NULL, tcp_get_commond, NULL);
+  if (iret != 0) {
+    debug_print("thread created error");
+  }
 }
