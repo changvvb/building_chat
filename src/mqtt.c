@@ -59,7 +59,7 @@ struct opts_struct
 	int keepalive;
 } opts =
 {
-	"raspberrypi", 0, "\n", 2,0, "raspberrypi", "raspberrypi", "121.42.62.140", "1883", 1, 10
+	"raspberrypi", 0, "\n", 2,0, "raspberrypi", "raspberrypi", "iot.celitea.cn", "1883", 1, 10
 };
 
 void get_pi_ip(char * ip_buffer) {
